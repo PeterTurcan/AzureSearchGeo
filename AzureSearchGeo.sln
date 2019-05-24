@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSearchGeo", "AzureSearchGeo\AzureSearchGeo.csproj", "{C85AD08B-FA00-4205-9A4D-515F110E48E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C85AD08B-FA00-4205-9A4D-515F110E48E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85AD08B-FA00-4205-9A4D-515F110E48E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85AD08B-FA00-4205-9A4D-515F110E48E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85AD08B-FA00-4205-9A4D-515F110E48E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4C2DF31-EF9E-43D9-A1E7-2F05DD9FC788}
+	EndGlobalSection
+EndGlobal

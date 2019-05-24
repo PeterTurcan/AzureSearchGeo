@@ -1,0 +1,173 @@
+﻿@model AzureSearchGeo.Models.SearchData
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<head>
+    <meta charset="utf-8">
+    <title>Azure search geo demo</title>
+
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    <style>
+        textarea.box1 {
+            width: 648px;
+            height: 30px;
+            border: none;
+            background-color: azure;
+            font-size: 14pt;
+            color: blue;
+        }
+
+        textarea.box2 {
+            width: 648px;
+            height: 100px;
+            border: none;
+            background-color: azure;
+            font-size: 12pt;
+        }
+
+        .sampleTitle {
+            font: 32px/normal 'Segoe UI Light',Arial,Helvetica,Sans-Serif;
+            margin: 20px 0;
+            font-size: 32px;
+            text-align: left;
+        }
+
+        .sampleText {
+            font: 16px/bold 'Segoe UI Light',Arial,Helvetica,Sans-Serif;
+            margin: 20px 0;
+            font-size: 14px;
+            text-align: left;
+            height: 30px;
+        }
+
+        .geoForm {
+            width: 820px;
+            box-shadow: 0 0 0 1px rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.16);
+            display: inline-block;
+            border-collapse: collapse;
+            border-spacing: 0;
+            list-style: none;
+            color: #666;
+        }
+
+        .geoBox {
+            width: 150px;
+            font-size: 16px;
+            margin: 5px 0 1px 20px;
+            padding: 0 10px 0 0;
+            max-height: 30px;
+            outline: none;
+            box-sizing: content-box;
+            height: 35px;
+            vertical-align: top;
+            border-color: lightgoldenrodyellow;
+            border-style: solid;
+        }
+
+        .geoTextBox {
+            width: 660px;
+            font-size: 16px;
+            margin: 5px 0 1px 20px;
+            padding: 0 10px 0 0;
+            max-height: 30px;
+            outline: none;
+            box-sizing: content-box;
+            height: 35px;
+            vertical-align: top;
+            border-color: lightgoldenrodyellow;
+            border-style: solid;
+        }
+
+        .searchBoxSubmit {
+            background-color: #fff;
+            border-color: #fff;
+            background-image: url(/images/search.png);
+            background-repeat: no-repeat;
+            height: 20px;
+            width: 20px;
+            text-indent: -99em;
+            border-width: 0;
+            border-style: solid;
+            margin: 10px;
+            outline: 0;
+        }
+    </style>
+</head>
+
+<h1 class="sampleTitle">
+    <img src="~/images/azure-logo.png" width="80" />
+    Geospatial filtering in Azure Search
+</h1>
+
+
+@using (Html.BeginForm("Geo", "Home", FormMethod.Post))
+{
+    // Display the search text box, with the search icon to the right of it.
+
+    <br />
+
+    <div id="geoinput" class="geoForm">
+        <table>
+            <tr>
+                <td>&nbsp;&nbsp;</td>
+                <td><b>Text:</b></td>
+                <td colspan="7">@Html.TextBoxFor(m => m.searchText, new { @class = "geoTextBox", @id = "geotext" })</td>
+            </tr>
+            <tr>
+                <td>&nbsp;&nbsp;</td>
+                <td><b>Latitude:</b></td>
+                <td>@Html.TextBoxFor(m => m.lat, new { @class = "geoBox", @id = "geolat" })</td>
+                <td><b>Longitude:</b></td>
+                <td>@Html.TextBoxFor(m => m.lon, new { @class = "geoBox", @id = "geolon" })</td>
+                <td><b>Radius:</b></td>
+                <td>@Html.TextBoxFor(m => m.radius, new { @class = "geoBox", @id = "georadius" })</td>
+                <td><input value="" class="searchBoxSubmit" type="submit"></td>
+                <td>&nbsp;&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    @if (Model != null)
+    {
+        // Show the result count.
+        <p class="sampleText">
+            @Html.DisplayFor(m => m.resultCount) Results
+        </p>
+
+        <div id="myDiv" style="width: 800px; height: 450px; overflow-y: scroll;" onscroll="scrolled()">
+            <!-- Show the hotel data. All pages will have ResultsPerPage entries, except for the last page. -->
+            @for (var i = 0; i < Model.hotels.Count; i++)
+            {
+                // Display the hotel name.
+                @Html.TextAreaFor(m => Model.getHotel(i).HotelName, new { @class = "box1" })
+                <br />
+                // Display the hotel sample room and description.
+                @Html.TextArea("idh", Model.getHotelDescription(i), new { @class = "box2" })
+                <br /> <br />
+            }
+        </div>
+
+        <script>
+            function scrolled() {
+                if (myDiv.offsetHeight + myDiv.scrollTop >= myDiv.scrollHeight) {
+                    $.getJSON("/home/nextgeo", function (data) {
+                        var div = document.getElementById('myDiv');
+
+                        // Append the returned data to the current list of hotels.
+                        for (var i = 0; i < data.length; i += 2) {
+                            div.innerHTML += '\n<textarea class="box1">' + data[i] + '</textarea>';
+                            div.innerHTML += '\n<textarea class="box2">' + data[i + 1] + '</textarea><br /><br />';
+                        }
+                    });
+                }
+            }
+        </script>
+    }
+}
+
+

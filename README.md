@@ -1,0 +1,2 @@
+# AzureSearchGeo
+Geospatical filtering example
